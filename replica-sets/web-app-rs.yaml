@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-web-app-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      service-name: node-app
+    matchExpressions:
+      - {key: service-name, operator: In, values: [node-app]}
+  template:
+    metadata:
+      labels:
+        service-name: node-app
+    spec:
+      containers:
+      - name: my-web-app
+        image: girishvarun/node-js-sample:1.0
+        ports:
+        - containerPort: 8080

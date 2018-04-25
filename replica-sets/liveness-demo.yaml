@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: liveness-app-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      service-name: liveness-app
+  template:
+    metadata:
+      labels:
+        service-name: liveness-app
+    spec:
+      containers:
+      - name: my-liveness-app
+        image: girishvarun/node-liveness-demo:1.0
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
