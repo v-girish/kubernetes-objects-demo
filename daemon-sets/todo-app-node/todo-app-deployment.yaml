@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      service-name: todo-app
+  template:
+    metadata:
+      labels:
+        service-name: todo-app
+    spec:
+      containers:
+      - name: todo-app
+        image: girishvarun/node-todo-app:datadog
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+          - name: DATADOG_HOST
+            value: "datadog-agent-service"
+          - name: DATADOG_PORT
+            value: "8125"
+      initContainers:
+      - name: init-mongodb
+        image: busybox
+        command: ['sh', '-c', 'until nslookup mongo; do echo waiting for mongo; sleep 2; done;']
