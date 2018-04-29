@@ -1,10 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-web-app-service
+  name: loadbalancer-service
 spec:
   selector:
     service-name: node-app
+  type: LoadBalancer
   ports:
   - protocol: TCP
     port: 80
